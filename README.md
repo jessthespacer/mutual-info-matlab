@@ -1,13 +1,21 @@
-# MATLAB `mutualInfo()` function
+# MATLAB `mutualInfo` function
 
-Fast MATLAB function to calculate the mutual information of two images. Designed specifically for speed and to emulate functionality of MATLAB native `entropy()` function. For details on usage, see function docstring or execute `help mutualInfo`.
+Fast MATLAB function to calculate the mutual information of two images. Designed specifically for speed and to emulate functionality of MATLAB native `entropy` function. For details on usage, see function docstring or execute `help mutualInfo`.
+
+Based on the [`mi`](https://www.mathworks.com/matlabcentral/fileexchange/13289-fast-mutual-information-of-two-images-or-signals) function created by J. Delpiano.
+
+Requirements and compatibility:
+- Developed and tested in MATLAB 2023a.
+- At least 2021a is required for the name=value syntax function arguments. Replace these with comma-separated syntax (lines 39-43) if you are using a version older than 2021a.
+- At least 2015b is required for the `histcounts` and `histcounts2` functions.
+- Requires the `im2uint8` function from the [Image Processing Toolbox](https://www.mathworks.com/products/image.html) (lines 30-31.) If this toolbox is not available to you, replace those lines with code that will scale the gray-levels of your image to values in the range of 0 to 255, then cast the images to `uint8`.
 
 # Theory
 The mutual information $I$ of two images $A$ and $B$ is given by [1]:
 
 $$ I(A, B) = \sum_{a, b} p_{AB}(a, b) \log_2{\frac{p_{AB}(a, b)}{p_A(a)\ p_B(b)}} $$
 
-Where $p_{AB}$ is the joint probability density function of the gray-levels of the images, and $p_A$ and $p_B$ are the probability density functions of the gray-levels of images $A$ and $B$, respectively.
+Where $p_{AB}$ is the joint probability density function of the gray-levels of the images, and $p_A$ and $p_B$ are the probability density functions of the gray-levels of images $A$ and $B$, respectively. It is assumed that $0 \log{\frac{0}{0}} = 0$.
 
 The information entropy $H$ of an image $A$ is given by [2]:
 
