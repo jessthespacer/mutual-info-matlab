@@ -1,5 +1,7 @@
 # MATLAB `mutualInfo` function
 
+[![View Image mutual information on File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://www.mathworks.com/matlabcentral/fileexchange/130829-image-mutual-information)
+
 Fast MATLAB function to calculate the mutual information of two images. Designed specifically for speed and to emulate functionality of MATLAB native `entropy` function. For details on usage, see function docstring or execute `help mutualInfo`.
 
 Based on the [`mi`](https://www.mathworks.com/matlabcentral/fileexchange/13289-fast-mutual-information-of-two-images-or-signals) function created by J. Delpiano.
