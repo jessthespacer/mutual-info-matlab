@@ -1,8 +1,12 @@
-function I = mutualInfo(A, B)
-    % MUTUALINFO Calculates the mutual information between two images.
+function I = mutualInfo(A, B, bitdepth)
+    % MUTUALINFO Calculates the mutual information between two digital
+    % images.
     %
     %   I = MUTUALINFO(A, B)        Mutual information of images A and B of
     %   identical size, using 256 bins for histograms.
+    %
+    %   I = MUTUALINFO(A, B, bitdepth)  Mutual information of images A and
+    %   B of identical size, using 2^bitdepth bins for histograms.
     %
     %   It is assumed that 0*log2(0) = 0.
     %
@@ -24,29 +28,35 @@ function I = mutualInfo(A, B)
     %       N. Paragios, J. Duncan, and N. Ayache, Eds., Boston, MA:
     %       Springer US, 2015, pp. 295–308. doi: 10.1007/978-0-387-09749-7_
     %       16.
+    
+    % Input validation, default to 8-bit if no bit depth provided
+    arguments
+        A {mustBeNonnegative, mustBeInteger}
+        B {mustBeNonnegative, mustBeInteger}
+        bitdepth (1,1) {mustBePositive, mustBeInteger} = 8
+    end
 
-    % Handle variable type same way as entropy()
+    maxGL = 2^bitdepth - 1; 
+
+    % Normalize gray levels to range [0, 1]
     if ~islogical(A)
-        A = im2uint8(A);
-        B = im2uint8(B);
-        L = 256;
+        A = double(A)/maxGL;
+        B = double(B)/maxGL;
+        L = maxGL + 1;
     else
         L = 2;
     end
     
     % Calculate gray-level probability distributions
     pa = histcounts(A, L, ...
-        BinLimits=[0 L-1], ...
-        BinMethod='integers', ...
+        BinLimits=[0 1], ...
         Normalization='probability');
     pb = histcounts(B, L, ...
-        BinLimits=[0 L-1], ...
-        BinMethod='integers', ...
+        BinLimits=[0 1], ...
         Normalization='probability');
     pab = histcounts2(A, B, L, ...
-        XBinLimits=[0 L-1], ...
-        YBinLimits=[0 L-1], ...
-        BinMethod='integers', ...
+        XBinLimits=[0 1], ...
+        YBinLimits=[0 1], ...
         Normalization='probability');
 
     % Calculate mutual information
